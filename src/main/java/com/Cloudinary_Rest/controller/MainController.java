@@ -1,5 +1,5 @@
 package com.Cloudinary_Rest.controller;
-//Comment
+
 import com.Cloudinary_Rest.dto.Mensaje;
 import com.Cloudinary_Rest.entity.Imagen;
 import com.Cloudinary_Rest.service.CloudinaryService;
