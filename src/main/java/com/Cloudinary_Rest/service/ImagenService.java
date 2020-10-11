@@ -21,21 +21,21 @@ public class ImagenService {
         return imagenRepository.findByOrderById();
     }*/
 
-    public void save(Imagen imagen){
+    public void save(Imagen imagen) {
         imagenRepository.save(imagen);
     }
 
-    public void delete(int id){
+    public void delete(String id) {
         imagenRepository.deleteById(id);
     }
 
     /*---*/
 
-    public Optional<Imagen> conseguirUno(int id){
+    public Optional<Imagen> conseguirUno(String id) {
         return imagenRepository.findById(id);
     }
 
-    public boolean existe(int id){
+    public boolean existe(String id) {
         return imagenRepository.existsById(id);
     }
 

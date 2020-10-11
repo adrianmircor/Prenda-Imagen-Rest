@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ImagenRepository extends JpaRepository<Imagen,Integer> {
+public interface ImagenRepository extends JpaRepository<Imagen,String> {
 
     //List<Imagen> findByOrderById();
 

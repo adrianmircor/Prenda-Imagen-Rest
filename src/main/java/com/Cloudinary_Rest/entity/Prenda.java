@@ -12,8 +12,17 @@ public class Prenda {
     private String nombre;
     private float precio;
     @OneToOne
-    @JoinColumn(name="id")
+    @JoinColumn(name = "imagenId")
     private Imagen imagen;
+
+    public Prenda() {
+    }
+
+    public Prenda(String nombre, float precio, Imagen imagen) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.imagen = imagen;
+    }
 
     public int getIdPrenda() {
         return idPrenda;
