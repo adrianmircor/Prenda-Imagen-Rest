@@ -5,6 +5,7 @@ import com.Cloudinary_Rest.repository.PrendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,6 +26,10 @@ public class PrendaService {
 
     public Prenda obtenerPrenda(int id){
        return prendaRepository.findById(id);
+    }
+
+    public List<Prenda> obtenerListaPrenda(){
+        return prendaRepository.findAll();
     }
 
 

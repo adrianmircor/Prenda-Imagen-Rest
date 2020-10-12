@@ -121,6 +121,74 @@ public class MainController {
         return new ResponseEntity(new Mensaje("Prenda ELIMINADA"), HttpStatus.OK);
     }
 
+    @GetMapping("/prenda/{id}")
+    public ResponseEntity<?> recuperarPrenda(@PathVariable("id") int id) throws IOException {
 
+        if(!prendaService.existePrenda(id)){
+            return new ResponseEntity(new Mensaje("No existe la prenda"), HttpStatus.NOT_FOUND);
+        }
+        Prenda prenda = prendaService.obtenerPrenda(id); //.get() ya que es de tipo Optional<?>
+
+        return new ResponseEntity(prenda, HttpStatus.OK);
+    }
+
+    @GetMapping("/lista")
+    public ResponseEntity<?> recuperarListaPrenda() throws IOException {
+
+        List<Prenda> listaPrenda = prendaService.obtenerListaPrenda(); //.get() ya que es de tipo Optional<?>
+
+        return new ResponseEntity(listaPrenda, HttpStatus.OK);
+    }
+
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<?> modificar(
+            @PathVariable("id") int id,
+            @RequestParam MultipartFile multipartFile,
+            @RequestParam String nombre,
+            @RequestParam float precio
+    ) throws IOException {
+
+        //Buscar la prenda por el id... si existe:
+        if(prendaService.existePrenda(id)){
+            BufferedImage bi = ImageIO.read(multipartFile.getInputStream());
+            //Si no es imagen el archivo a subir
+            if (bi == null) {
+                return new ResponseEntity(new Mensaje("Imagen no valida"), HttpStatus.BAD_REQUEST);
+            }
+
+            //result tiene el body q se envió a Cloudinary
+            Map result = cloudinaryService.upload(multipartFile); //Subir a Cloudinary
+            //Imagen(String name, String imagenUrl, String imagenId)
+            Imagen imagen = new Imagen(
+                    (String) result.get("original_filename"), //String name
+                    (String) result.get("url"), //String imagenUrl
+                    (String) result.get("public_id")); //String imagenId
+
+            //Guarda la imagen en BD
+            imagenService.save(imagen);
+
+            //Buscar la prenda por el id
+            Prenda prendaAnterior = prendaService.obtenerPrenda(id);
+            String idImagen_AntesModificar = prendaAnterior.getImagen().getImagenId();
+
+            Prenda prendaNueva = new Prenda(id,nombre,precio,imagen);
+
+            //Guardar la NUEVA prenda en tabla Prenda
+            prendaService.guardar(prendaNueva);
+
+            System.out.println("ID IMAGEN ANTES: "+idImagen_AntesModificar + " / "+ "ID IMAGEN LUEGO: "+imagen.getImagenId());
+
+            //Eliminar la imagen de la BD y Cloudinary ANTERIOR
+            imagenService.delete(idImagen_AntesModificar);
+            cloudinaryService.delete(idImagen_AntesModificar);
+
+            System.out.println("LA PRENDA MODIFICADA ES: "+prendaNueva);
+
+            return new ResponseEntity(new Mensaje("Prenda MODIFICADA"), HttpStatus.OK); //Ya que se debe retornar ResponseEntity<?> = ResponseEntity<Mensaje>
+        }
+
+        return new ResponseEntity(new Mensaje("NO EXISTE LA PRENDA"), HttpStatus.BAD_REQUEST); //Ya que se debe retornar ResponseEntity<?> = ResponseEntity<Mensaje>
+
+    }
 
 }

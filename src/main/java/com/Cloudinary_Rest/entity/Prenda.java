@@ -24,6 +24,13 @@ public class Prenda {
         this.imagen = imagen;
     }
 
+    public Prenda(int idPrenda, String nombre, float precio, Imagen imagen) {
+        this.idPrenda = idPrenda;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.imagen = imagen;
+    }
+
     public int getIdPrenda() {
         return idPrenda;
     }
