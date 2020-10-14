@@ -14,31 +14,29 @@ public class PrendaService {
     @Autowired
     PrendaRepository prendaRepository;
 
-    public void guardar(Prenda prenda){
+    public void guardar(Prenda prenda) {
         prendaRepository.save(prenda);
     }
 
-    public void eliminar(int id){
+    public void eliminar(int id) {
         prendaRepository.deleteById(id);
     }
 
     /*---*/
 
-    public Prenda obtenerPrenda(int id){
-       return prendaRepository.findById(id);
+    public Prenda obtenerPrenda(int id) {
+
+        return prendaRepository.findById(id);
     }
 
-    public List<Prenda> obtenerListaPrenda(){
+    public List<Prenda> obtenerListaPrenda() {
         return prendaRepository.findAll();
     }
 
 
-
-    public boolean existePrenda(int id){
+    public boolean existePrenda(int id) {
         return prendaRepository.existsById(id);
     }
-
-
 
 
 }
